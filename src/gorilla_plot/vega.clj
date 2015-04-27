@@ -20,9 +20,11 @@
    })
 
 (defn default-plot-axes
-  []
-  {:axes [{:type "x" :scale "x"}
-          {:type "y" :scale "y"}]})
+  [x-title y-title]
+  {:axes [(merge {:type "x" :scale "x"}
+                 (when x-title {:title x-title}))
+          (merge {:type "y" :scale "y"}
+                 (when y-title {:title y-title}))]})
 
 ;;; Scatter/list plots
 
