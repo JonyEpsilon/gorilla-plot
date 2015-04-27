@@ -11,7 +11,7 @@
   [plot-size aspect-ratio]
   {:width   plot-size
    :height  (float (/ plot-size aspect-ratio))
-   :padding {:top 10, :left 50, :bottom 20, :right 10}})
+   :padding {:top 10, :left 40, :bottom 40, :right 10}})
 
 (defn data-from-list
   [data-key data]

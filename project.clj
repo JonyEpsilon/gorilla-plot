@@ -1,4 +1,4 @@
-(defproject dtolpin/gorilla-plot "0.1.4-SPANSHOT"
+(defproject dtolpin/gorilla-plot "0.1.4-SNAPSHOT"
   :description "A simple data-driven plotting library for Gorilla REPL."
   :url "https://github.com/JonyEpsilon/gorilla-plot"
   :license {:name "MIT"}
