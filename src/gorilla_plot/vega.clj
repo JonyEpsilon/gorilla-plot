@@ -7,11 +7,17 @@
 (ns gorilla-plot.vega
   (:require [gorilla-repl.vega :as vega]))
 
+;; Constants for padding and offsets are chosen so
+;; that simple axis titles are visible and do not
+;; obstruct axis labels, for common ranges. A smarter
+;; dynamic approach is probably possible, but for most
+;; practical cases this is sufficient.
+
 (defn container
   [plot-size aspect-ratio]
   {:width   plot-size
    :height  (float (/ plot-size aspect-ratio))
-   :padding {:top 10, :left 50, :bottom 40, :right 10}})
+   :padding {:top 10, :left 55, :bottom 40, :right 10}})
 
 (defn data-from-list
   [data-key data]
@@ -22,9 +28,9 @@
 (defn default-plot-axes
   [x-title y-title]
   {:axes [(merge {:type "x" :scale "x"}
-                 (when x-title {:title x-title}))
+                 (when x-title {:title x-title :titleOffset 30}))
           (merge {:type "y" :scale "y"}
-                 (when y-title {:title y-title :titleOffset 40}))]})
+                 (when y-title {:title y-title :titleOffset 45}))]})
 
 ;;; Scatter/list plots
 
