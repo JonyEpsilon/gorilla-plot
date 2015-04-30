@@ -11,7 +11,7 @@
   [plot-size aspect-ratio]
   {:width   plot-size
    :height  (float (/ plot-size aspect-ratio))
-   :padding {:top 10, :left 40, :bottom 40, :right 10}})
+   :padding {:top 10, :left 50, :bottom 40, :right 10}})
 
 (defn data-from-list
   [data-key data]
@@ -24,7 +24,7 @@
   {:axes [(merge {:type "x" :scale "x"}
                  (when x-title {:title x-title}))
           (merge {:type "y" :scale "y"}
-                 (when y-title {:title y-title}))]})
+                 (when y-title {:title y-title :titleOffset 40}))]})
 
 ;;; Scatter/list plots
 
