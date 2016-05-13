@@ -15,7 +15,7 @@
 
 (defn list-plot
   "Function for plotting list data."
-  [data & {:keys [joined plot-size aspect-ratio colour color plot-range #_symbol symbol-size opacity x-title y-title]
+  [data & {:keys [joined plot-size aspect-ratio colour color plot-range #_symbol symbol-size opacity x-title y-title grid]
            :or   {joined       false
                   plot-size    400
                   aspect-ratio 1.618
@@ -23,6 +23,7 @@
                   ;;symbol       "circle"
                   symbol-size  70
                   opacity      1
+                  grid         false
                   }}]
   (let [series-name (uuid)
         plot-data (if (sequential? (first data))
@@ -35,7 +36,7 @@
                         (vega/line-plot-marks series-name (or colour color) opacity)
                         (vega/list-plot-marks series-name (or colour color) #_symbol symbol-size opacity))
                       (vega/default-list-plot-scales series-name plot-range)
-                      (vega/default-plot-axes x-title y-title)))))
+                      (vega/default-plot-axes x-title y-title grid)))))
 
 
 (defn plot
@@ -50,11 +51,12 @@
 
 
 (defn bar-chart
-  [categories values & {:keys [plot-size aspect-ratio colour color plot-range opacity x-title y-title]
+  [categories values & {:keys [plot-size aspect-ratio colour color plot-range opacity x-title y-title grid]
                         :or   {plot-size    400
                                aspect-ratio 1.618
                                plot-range   [:all :all]
                                opacity      1
+                               grid         false
                                }}]
   (let [series-name (uuid)]
     (v/vega-view (merge
@@ -62,18 +64,19 @@
                       (vega/data-from-list series-name (map vector categories values))
                       (vega/bar-chart-marks series-name (or colour color) opacity)
                       (vega/default-bar-chart-scales series-name plot-range)
-                      (vega/default-plot-axes x-title y-title)))))
+                      (vega/default-plot-axes x-title y-title grid)))))
 
 
 (defn histogram
   "Plot the histogram of a sample."
-  [data & {:keys [plot-range bins normalize normalise plot-size aspect-ratio colour color opacity fill-opacity x-title y-title]
+  [data & {:keys [plot-range bins normalize normalise plot-size aspect-ratio colour color opacity fill-opacity x-title y-title grid]
            :or   {plot-range   [:all :all]
                   bins         :automatic
                   plot-size    400
                   aspect-ratio 1.618
                   opacity      1
-                  fill-opacity  0.4}
+                  fill-opacity 0.4
+                  grid         false}
            :as   opts}]
   (let [bin-range-spec (first plot-range)
         range-min (if (= bin-range-spec :all) (apply min data) (first bin-range-spec))
@@ -110,7 +113,7 @@
                         (vega/data-from-list series-name plot-data)
                         (vega/histogram-marks series-name (or colour color) opacity fill-opacity)
                         (vega/default-list-plot-scales series-name plot-range)
-                        (vega/default-plot-axes x-title y-title))))))
+                        (vega/default-plot-axes x-title y-title grid))))))
 
 (defn compose
   [& plots]

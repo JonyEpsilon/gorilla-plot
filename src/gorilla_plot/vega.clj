@@ -26,11 +26,13 @@
    })
 
 (defn default-plot-axes
-  [x-title y-title]
+  [x-title y-title grid]
   {:axes [(merge {:type "x" :scale "x"}
-                 (when x-title {:title x-title :titleOffset 30}))
+                 (when x-title {:title x-title :titleOffset 30})
+                 (when (contains? #{true :x} grid) {:grid true}))
           (merge {:type "y" :scale "y"}
-                 (when y-title {:title y-title :titleOffset 45}))]})
+                 (when y-title {:title y-title :titleOffset 45})
+                 (when (contains? #{true :y} grid) {:grid true}))]})
 
 ;;; Scatter/list plots
 
