@@ -36,7 +36,7 @@
 
 (defn- domain-helper
   [data-key axis-plot-range axis]
-  (if (= axis-plot-range :all) {:data data-key, :field (str "data." axis)} axis-plot-range))
+  (if (= axis-plot-range :all) {:data data-key, :field (str axis)} axis-plot-range))
 
 (defn default-list-plot-scales
   [data-key plot-range]
@@ -59,8 +59,8 @@
   [data-key colour #_shape size opacity]
   {:marks [{:type        "symbol",
             :from       {:data data-key}
-            :properties {:enter  {:x           {:scale "x", :field "data.x"}
-                                  :y           {:scale "y", :field "data.y"}
+            :properties {:enter  {:x           {:scale "x", :field "x"}
+                                  :y           {:scale "y", :field "y"}
                                   :fill        {:value (or colour "steelblue")}
                                   :fillOpacity {:value opacity}
                                   }
@@ -76,8 +76,8 @@
   [data-key colour opacity]
   {:marks [{:type       "line",
             :from       {:data data-key}
-            :properties {:enter {:x             {:scale "x", :field "data.x"}
-                                 :y             {:scale "y", :field "data.y"}
+            :properties {:enter {:x             {:scale "x", :field "x"}
+                                 :y             {:scale "y", :field "y"}
                                  :stroke        {:value (or colour "#FF29D2")}
                                  :strokeWidth   {:value 2}
                                  :strokeOpacity {:value opacity}
@@ -102,9 +102,9 @@
   [data-key colour opacity]
   {:marks [{:type       "rect"
             :from       {:data data-key}
-            :properties {:enter {:x     {:scale "x", :field "data.x"}
+            :properties {:enter {:x     {:scale "x", :field "x"}
                                  :width {:scale "x", :band true, :offset -1}
-                                 :y     {:scale "y", :field "data.y"}
+                                 :y     {:scale "y", :field "y"}
                                  :y2    {:scale "y", :value 0}}
                          :update {:fill    {:value (or colour "steelblue")}
                                   :opacity {:value opacity}}
@@ -117,8 +117,8 @@
   [data-key colour opacity fillOpacity]
   {:marks [{:type       "line",
             :from       {:data data-key}
-            :properties {:enter {:x             {:scale "x", :field "data.x"}
-                                 :y             {:scale "y", :field "data.y"}
+            :properties {:enter {:x             {:scale "x", :field "x"}
+                                 :y             {:scale "y", :field "y"}
                                  :interpolate   {:value "step-before"}
                                  :fill          {:value (or colour "steelblue")}
                                  :fillOpacity   {:value fillOpacity}
