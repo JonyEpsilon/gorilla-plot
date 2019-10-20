@@ -2,7 +2,7 @@
 ;;;;
 ;;;; gorilla-repl is licenced to you under the MIT licence. See the file LICENCE.txt for full details.
 
-(ns gorilla-plot.util)
+(ns pinkgorilla.ui.gorilla-plot.util)
 
 (defn count-in-range
   [data min max]

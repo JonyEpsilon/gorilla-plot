@@ -4,8 +4,7 @@
 
 ;;; Functions for constructing vega specs. Many of the defaults are adapted from the vega examples.
 
-(ns gorilla-plot.vega
-  (:require [gorilla-repl.vega :as vega]))
+(ns pinkgorilla.ui.gorilla-plot.vega)
 
 ;; Constants for padding and offsets are chosen so
 ;; that simple axis titles are visible and do not
@@ -128,6 +127,4 @@
                                  :strokeOpacity {:value opacity}
                                  }}}]})
 
-(defn from-vega
-  [g]
-  (:content g))
+

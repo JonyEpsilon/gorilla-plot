@@ -2,10 +2,10 @@
 ;;;;
 ;;;; gorilla-repl is licenced to you under the MIT licence. See the file LICENCE.txt for full details.
 
-(ns gorilla-plot.core
-  (:require [gorilla-plot.vega :as vega]
-            [gorilla-plot.util :as util]
-            [gorilla-repl.vega :as v]))
+(ns pinkgorilla.ui.gorilla-plot.plot
+  (:require [pinkgorilla.ui.gorilla-plot.vega :as vega]
+            [pinkgorilla.ui.gorilla-plot.util :as util]
+            ))
 
 ;; Series' are given random names so that plots can be composed
 ;; Thanks: https://gist.github.com/gorsuch/1418850
@@ -28,14 +28,14 @@
         plot-data (if (sequential? (first data))
                     data
                     (add-indices data))]
-    (v/vega-view (merge
+     (merge
                       (vega/container plot-size aspect-ratio)
                       (vega/data-from-list series-name plot-data)
                       (if joined
                         (vega/line-plot-marks series-name (or colour color) opacity)
                         (vega/list-plot-marks series-name (or colour color) #_symbol symbol-size opacity))
                       (vega/default-list-plot-scales series-name plot-range)
-                      (vega/default-plot-axes x-title y-title)))))
+                      (vega/default-plot-axes x-title y-title))))
 
 
 (defn plot
@@ -57,12 +57,12 @@
                                opacity      1
                                }}]
   (let [series-name (uuid)]
-    (v/vega-view (merge
+     (merge
                       (vega/container plot-size aspect-ratio)
                       (vega/data-from-list series-name (map vector categories values))
                       (vega/bar-chart-marks series-name (or colour color) opacity)
                       (vega/default-bar-chart-scales series-name plot-range)
-                      (vega/default-plot-axes x-title y-title)))))
+                      (vega/default-plot-axes x-title y-title))))
 
 
 (defn histogram
@@ -105,19 +105,33 @@
           ;; bookend the y-data with zeroes.
           y-data (concat [0] cat-data [0])
           plot-data (map vector x-data y-data)]
-      (v/vega-view (merge
+       (merge
                         (vega/container plot-size aspect-ratio)
                         (vega/data-from-list series-name plot-data)
                         (vega/histogram-marks series-name (or colour color) opacity fill-opacity)
                         (vega/default-list-plot-scales series-name plot-range)
-                        (vega/default-plot-axes x-title y-title))))))
+                        (vega/default-plot-axes x-title y-title)))))
+
+
+;(defn from-vega
+;  "extract vega-plot spec from pink-gorilla-repl output format.
+;   all the individual plots are already formatted for pink-gorilla-repl
+;   in order to compose them we have to first unwrap the gorilla format to get the naked
+;   plot data, then they are composeable again"
+;  [g]
+;  (:content g))
 
 (defn compose
   [& plots]
-  (let [plot-data (map vega/from-vega plots)
+  (let [plot-data plots ;  (map from-vega plots)
         first-plot (first plot-data)
         {:keys [width height padding scales axes]} first-plot
         data (apply concat (map :data plot-data))
         marks (apply concat (map :marks plot-data))]
-    (v/vega-view
-      {:width width :height height :padding padding :scales scales :axes axes :data data :marks marks})))
+    {:width width 
+     :height height 
+     :padding padding 
+     :scales scales 
+     :axes axes 
+     :data data 
+     :marks marks}))
