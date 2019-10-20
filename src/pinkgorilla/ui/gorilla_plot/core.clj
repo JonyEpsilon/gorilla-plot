@@ -11,10 +11,8 @@
 
 (defn wrap-vega [f]
   (fn [& p]
-    (do 
-      (println "calculating with params" p)
-      (vega! 
-       (apply f p)))))
+    (vega! 
+     (apply f p))))
 
 ;; 
 
