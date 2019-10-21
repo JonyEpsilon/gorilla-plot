@@ -135,3 +135,13 @@
      :axes axes 
      :data data 
      :marks marks}))
+
+
+(comment
+  (list-plot [1 2 3 ])
+  
+  (compose
+   (list-plot [1 2 3])
+   (list-plot [3 2 1]))
+  
+ )

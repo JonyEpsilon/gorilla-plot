@@ -1,4 +1,4 @@
-(defproject  pinkgorilla.ui.gorilla-plot "0.8.4"
+(defproject  pinkgorilla.ui.gorilla-plot "0.8.6"
   :description "A simple data-driven plotting library for Gorilla REPL."
   :url "https://github.com/pink-gorilla/gorilla-plot"
   :license {:name "MIT"}
@@ -8,5 +8,5 @@
                              :sign-releases false}]]
   :dependencies 
   [[org.clojure/clojure "1.9.0-alpha14"]
-   [pinkgorilla.ui.gorilla-renderable "2.0.9"] ;PinkGorilla Renderable (AND currently VEGA)
+   [pinkgorilla.ui.gorilla-renderable "2.0.10"] ;PinkGorilla Renderable (AND currently VEGA)
    ])
