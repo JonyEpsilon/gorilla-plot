@@ -78,6 +78,7 @@
 
 ;;; Bar charts
 
+
 (defn default-bar-chart-scales
   [data-key plot-range]
   {:scales [{:name   "x"
@@ -103,6 +104,7 @@
 
 
 ;;; Histograms
+
 
 (defn histogram-marks
   [data-key colour opacity fillOpacity]

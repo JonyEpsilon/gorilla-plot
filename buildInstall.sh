@@ -1,1 +1,0 @@
-lein do clean, install
