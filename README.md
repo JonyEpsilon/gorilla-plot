@@ -1,4 +1,4 @@
-# gorilla-plot
+# gorilla-plot [![GitHub Actions status |pink-gorilla/gorilla-plot](https://github.com/pink-gorilla/gorilla-plot/workflows/CI/badge.svg)](https://github.com/pink-gorilla/gorilla-plot/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-plot.svg)](https://clojars.org/org.pinkgorilla/gorilla-plot)
 
 This gorilla-plot library has been adapted for Pink-Gorilla-Repl.
 

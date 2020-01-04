@@ -16,7 +16,7 @@
 (run-all-tests)
 
 #_(.addShutdownHook
-    (Runtime/getRuntime)
-    (proxy [Thread] []
-      (run []
-        (run-all-tests))))
+   (Runtime/getRuntime)
+   (proxy [Thread] []
+     (run []
+       (run-all-tests))))

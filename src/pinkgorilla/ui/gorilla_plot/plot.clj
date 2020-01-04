@@ -4,11 +4,12 @@
 
 (ns pinkgorilla.ui.gorilla-plot.plot
   (:require [pinkgorilla.ui.gorilla-plot.vega :as vega]
-            [pinkgorilla.ui.gorilla-plot.util :as util]
-            ))
+            [pinkgorilla.ui.gorilla-plot.util :as util]))
 
 ;; Series' are given random names so that plots can be composed
 ;; Thanks: https://gist.github.com/gorsuch/1418850
+
+
 (defn- uuid [] (str (java.util.UUID/randomUUID)))
 
 (defn add-indices [d] (map vector (range (count d)) d))
@@ -22,21 +23,19 @@
                   plot-range   [:all :all]
                   ;;symbol       "circle"
                   symbol-size  70
-                  opacity      1
-                  }}]
+                  opacity      1}}]
   (let [series-name (uuid)
         plot-data (if (sequential? (first data))
                     data
                     (add-indices data))]
-     (merge
-                      (vega/container plot-size aspect-ratio)
-                      (vega/data-from-list series-name plot-data)
-                      (if joined
-                        (vega/line-plot-marks series-name (or colour color) opacity)
-                        (vega/list-plot-marks series-name (or colour color) #_symbol symbol-size opacity))
-                      (vega/default-list-plot-scales series-name plot-range)
-                      (vega/default-plot-axes x-title y-title))))
-
+    (merge
+     (vega/container plot-size aspect-ratio)
+     (vega/data-from-list series-name plot-data)
+     (if joined
+       (vega/line-plot-marks series-name (or colour color) opacity)
+       (vega/list-plot-marks series-name (or colour color) #_symbol symbol-size opacity))
+     (vega/default-list-plot-scales series-name plot-range)
+     (vega/default-plot-axes x-title y-title))))
 
 (defn plot
   "Function for plotting functions of a single variable."
@@ -48,22 +47,19 @@
     ;; surely there's a function to do this!
     (apply (partial list-plot plot-data) (mapcat identity (merge {:joined true} opts)))))
 
-
 (defn bar-chart
   [categories values & {:keys [plot-size aspect-ratio colour color plot-range opacity x-title y-title]
                         :or   {plot-size    400
                                aspect-ratio 1.618
                                plot-range   [:all :all]
-                               opacity      1
-                               }}]
+                               opacity      1}}]
   (let [series-name (uuid)]
-     (merge
-                      (vega/container plot-size aspect-ratio)
-                      (vega/data-from-list series-name (map vector categories values))
-                      (vega/bar-chart-marks series-name (or colour color) opacity)
-                      (vega/default-bar-chart-scales series-name plot-range)
-                      (vega/default-plot-axes x-title y-title))))
-
+    (merge
+     (vega/container plot-size aspect-ratio)
+     (vega/data-from-list series-name (map vector categories values))
+     (vega/bar-chart-marks series-name (or colour color) opacity)
+     (vega/default-bar-chart-scales series-name plot-range)
+     (vega/default-plot-axes x-title y-title))))
 
 (defn histogram
   "Plot the histogram of a sample."
@@ -95,8 +91,7 @@
                :probability (count data)
                :probability-density (* (count data) bin-size)
                :count 1)
-        cat-data (map #(/ % (double norm)) cat-counts)
-        ]
+        cat-data (map #(/ % (double norm)) cat-counts)]
     (let [series-name (uuid)
           ;; we use a modified line plot to draw the histogram, rather than the more obvious bar-chart (as then the
           ;; scales are easier to work with, especially when adding lines). This requires jumping through some hoops:
@@ -105,12 +100,12 @@
           ;; bookend the y-data with zeroes.
           y-data (concat [0] cat-data [0])
           plot-data (map vector x-data y-data)]
-       (merge
-                        (vega/container plot-size aspect-ratio)
-                        (vega/data-from-list series-name plot-data)
-                        (vega/histogram-marks series-name (or colour color) opacity fill-opacity)
-                        (vega/default-list-plot-scales series-name plot-range)
-                        (vega/default-plot-axes x-title y-title)))))
+      (merge
+       (vega/container plot-size aspect-ratio)
+       (vega/data-from-list series-name plot-data)
+       (vega/histogram-marks series-name (or colour color) opacity fill-opacity)
+       (vega/default-list-plot-scales series-name plot-range)
+       (vega/default-plot-axes x-title y-title)))))
 
 
 ;(defn from-vega
@@ -121,6 +116,7 @@
 ;  [g]
 ;  (:content g))
 
+
 (defn compose
   [& plots]
   (let [plot-data plots ;  (map from-vega plots)
@@ -128,20 +124,17 @@
         {:keys [width height padding scales axes]} first-plot
         data (apply concat (map :data plot-data))
         marks (apply concat (map :marks plot-data))]
-    {:width width 
-     :height height 
-     :padding padding 
-     :scales scales 
-     :axes axes 
-     :data data 
+    {:width width
+     :height height
+     :padding padding
+     :scales scales
+     :axes axes
+     :data data
      :marks marks}))
 
-
 (comment
-  (list-plot [1 2 3 ])
-  
+  (list-plot [1 2 3])
+
   (compose
    (list-plot [1 2 3])
-   (list-plot [3 2 1]))
-  
- )
+   (list-plot [3 2 1])))
