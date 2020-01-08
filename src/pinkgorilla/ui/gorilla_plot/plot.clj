@@ -69,8 +69,7 @@
                   plot-size    400
                   aspect-ratio 1.618
                   opacity      1
-                  fill-opacity  0.4}
-           :as   opts}]
+                  fill-opacity 0.4}}]
   (let [bin-range-spec (first plot-range)
         range-min (if (= bin-range-spec :all) (apply min data) (first bin-range-spec))
         range-max-raw (if (= bin-range-spec :all) (apply max data) (second bin-range-spec))
@@ -91,21 +90,21 @@
                :probability (count data)
                :probability-density (* (count data) bin-size)
                :count 1)
-        cat-data (map #(/ % (double norm)) cat-counts)]
-    (let [series-name (uuid)
-          ;; we use a modified line plot to draw the histogram, rather than the more obvious bar-chart (as then the
-          ;; scales are easier to work with, especially when adding lines). This requires jumping through some hoops:
-          ;; move the x-points to be in the middle of their bins and add two extra
-          x-data (map (partial + bin-size) (range (- range-min bin-size) (+ range-max bin-size) bin-size))
-          ;; bookend the y-data with zeroes.
-          y-data (concat [0] cat-data [0])
-          plot-data (map vector x-data y-data)]
-      (merge
-       (vega/container plot-size aspect-ratio)
-       (vega/data-from-list series-name plot-data)
-       (vega/histogram-marks series-name (or colour color) opacity fill-opacity)
-       (vega/default-list-plot-scales series-name plot-range)
-       (vega/default-plot-axes x-title y-title)))))
+        cat-data (map #(/ % (double norm)) cat-counts)
+        series-name (uuid)
+        ;; we use a modified line plot to draw the histogram, rather than the more obvious bar-chart (as then the
+        ;; scales are easier to work with, especially when adding lines). This requires jumping through some hoops:
+        ;; move the x-points to be in the middle of their bins and add two extra
+        x-data (map (partial + bin-size) (range (- range-min bin-size) (+ range-max bin-size) bin-size))
+        ;; bookend the y-data with zeroes.
+        y-data (concat [0] cat-data [0])
+        plot-data (map vector x-data y-data)]
+    (merge
+     (vega/container plot-size aspect-ratio)
+     (vega/data-from-list series-name plot-data)
+     (vega/histogram-marks series-name (or colour color) opacity fill-opacity)
+     (vega/default-list-plot-scales series-name plot-range)
+     (vega/default-plot-axes x-title y-title))))
 
 
 ;(defn from-vega
@@ -119,18 +118,18 @@
 
 (defn compose
   [& plots]
-  (let [plot-data plots ;  (map from-vega plots)
+  (let [plot-data plots                                     ;  (map from-vega plots)
         first-plot (first plot-data)
         {:keys [width height padding scales axes]} first-plot
         data (apply concat (map :data plot-data))
         marks (apply concat (map :marks plot-data))]
-    {:width width
-     :height height
+    {:width   width
+     :height  height
      :padding padding
-     :scales scales
-     :axes axes
-     :data data
-     :marks marks}))
+     :scales  scales
+     :axes    axes
+     :data    data
+     :marks   marks}))
 
 (comment
   (list-plot [1 2 3])

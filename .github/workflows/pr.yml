@@ -23,6 +23,10 @@ jobs:
         lein deps
     - name: Check formatting
       run: lein cljfmt check
-    - name: Run tests
+    - name: Lint
+      run: lein clj-kondo --lint .
+    - name: Run tests / code coverage
       run: |
         lein test
+        lein cloverage
+        bash <(curl -s https://codecov.io/bash) -d

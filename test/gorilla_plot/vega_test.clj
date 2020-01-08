@@ -1,5 +1,5 @@
 (ns gorilla-plot.vega-test
-  (:use clojure.test))
+  (:require [clojure.test :refer [is deftest]]))
 
 (defn my-test-fixture [f]
   (f))
@@ -13,7 +13,7 @@
   (is (= 5 (add 1 4)))
   (is (= 5 (add 3 2))))
 
-(run-all-tests)
+#_(run-all-tests)
 
 #_(.addShutdownHook
    (Runtime/getRuntime)

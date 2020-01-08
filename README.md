@@ -1,4 +1,4 @@
-# gorilla-plot [![GitHub Actions status |pink-gorilla/gorilla-plot](https://github.com/pink-gorilla/gorilla-plot/workflows/CI/badge.svg)](https://github.com/pink-gorilla/gorilla-plot/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-plot.svg)](https://clojars.org/org.pinkgorilla/gorilla-plot)
+# Gorilla Plot [![GitHub Actions status |pink-gorilla/gorilla-plot](https://github.com/pink-gorilla/gorilla-plot/workflows/CI/badge.svg)](https://github.com/pink-gorilla/gorilla-plot/actions?workflow=CI)[![Codecov Project](https://codecov.io/gh/pink-gorilla/gorilla-plot/branch/master/graph/badge.svg)](https://codecov.io/gh/pink-gorilla/gorilla-plot)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-plot.svg)](https://clojars.org/org.pinkgorilla/gorilla-plot)
 
 This gorilla-plot library has been adapted for Pink-Gorilla-Repl.
 
