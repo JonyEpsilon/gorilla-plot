@@ -1,0 +1,47 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # Central limit theorem
+;;; 
+;;; We're going to look at the CLT in this worksheet, and simulate its action. Be reminded that
+;;; 
+;;; $$ \sum_i u_i \overset{d}\to N $$
+;;; 
+;;; where @@u_i@@ is a uniformly distributed random variable.
+;; **
+
+;; @@ [clj]
+(use '[pinkgorilla.helper]) 
+(pinkgorilla.helper/add-dependencies '[org.pinkgorilla/gorilla-plot "0.8.8"])
+(use 'pinkgorilla.ui.gorilla-plot.core)
+;; (use 'gorilla-test.core)
+;; @@
+
+;; @@ [clj]
+(defn r [] (- (apply + (repeatedly 50 rand)) 25))
+;; @@
+
+;; @@ [clj]
+(def data (repeatedly 1000 r))
+;; @@
+
+;; **
+;;; Let's compare the simulated data and the expected distribution.
+;; **
+
+;; @@ [clj]
+;; FIXME: Where is gaussian?
+(compose
+ (histogram data :bins 50 :normalise :probability-density)
+ ;; (plot #(gaussian % 2 0) [-10 10])
+   )
+;; @@
+
+;; @@ [clj]
+
+;; @@
