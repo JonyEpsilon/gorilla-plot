@@ -1,4 +1,4 @@
-(defproject org.pinkgorilla/gorilla-plot "0.8.12-SNAPSHOT"
+(defproject org.pinkgorilla/gorilla-plot "0.9.1-SNAPSHOT"
   :description "A simple data-driven plotting library for Gorilla REPL."
   :url "https://github.com/pink-gorilla/gorilla-plot"
   :license {:name "MIT"}
@@ -7,7 +7,7 @@
                                      :password :env/release_password
                                      :sign-releases false}]]
   :dependencies   [[org.clojure/clojure "1.10.1"]
-                   [org.pinkgorilla/gorilla-renderable "3.0.0"] ;PinkGorilla Renderable (AND currently VEGA)
+                   ;[org.pinkgorilla/gorilla-renderable "3.0.0"] ;PinkGorilla Renderable (AND currently VEGA)
                    ]
   :profiles {:dev {:dependencies [[clj-kondo "2019.11.23"]]
                    :plugins      [[lein-cljfmt "0.6.6"]

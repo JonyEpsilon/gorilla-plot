@@ -3,15 +3,18 @@
    a the datatype that will trigger vega rendering"
   (:require
    [pinkgorilla.ui.gorilla-plot.plot :as p]
-   [pinkgorilla.ui.gorilla-plot.vega]
-
-   [pinkgorilla.ui.gorilla-renderable :refer [render]]
-   [pinkgorilla.ui.vega :refer [vega! rendered-to-spec]]))
+   ;[pinkgorilla.ui.gorilla-plot.vega]
+   ;[pinkgorilla.ui.gorilla-renderable :refer [render]]
+   ;[pinkgorilla.ui.vega :refer [vega! rendered-to-spec]]
+   ))
 
 ;; .plot functions create only the vega spec.
 ;; The notebook users should be able to use all this functions without having
 ;; to wrap them in (vega! f) syntax.
 
+
+(defn vega! [p]
+  (with-meta [:vega p] {:R true}))
 
 (defn wrap-vega [f]
   (fn [& p]
@@ -28,8 +31,11 @@
 ;(def compose (wrap-vega p/compose))
 
 
+;(defn unwrap [renderable]
+;  (rendered-to-spec (render renderable)))
+
 (defn unwrap [renderable]
-  (rendered-to-spec (render renderable)))
+   (second renderable)) ; [:vega data]
 
 (defn compose
   [& plots]

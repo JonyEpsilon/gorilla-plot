@@ -1,18 +1,14 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{}
+{:tags "clj,plot,sample", :name "gorilla-plot samples", :tagline "samples adapted from legacy-gorilla"}
 
 ;; @@
 
 ;; **
-;;; # Central limit theorem
+;;; # Graphing tests
 ;;; 
-;;; We're going to look at the CLT in this worksheet, and simulate its action. Be reminded that
-;;; 
-;;; $$ \sum_i u_i \overset{d}\to N $$
-;;; 
-;;; where @@u_i@@ is a uniformly distributed random variable.
+;;; A showcase of gorilla-plot graph types. Here I load both the vega and core namespaces. This is useful for development, but if you're just using the library then you only need to load the 'gorilla-plot.core namespace.
 ;; **
 
 ;; @@ [clj]
@@ -31,41 +27,175 @@
   (:require 
     [clojure.pprint]
     [pinkgorilla.ui.gorilla-plot.core :refer [list-plot bar-chart compose histogram plot]]))
-    ;[pinkgorilla.ui.gorilla-plot.plot :refer [list-plot bar-chart compose histogram plot]]
+    ;[pinkgorilla.ui.gorilla-plot.plot :refer [list-plot bar-chart compose histogram plot]]   
 ;; @@
 ;; =>
 ;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
 ;; <=
 
+;; **
+;;; Some data to look at.
+;; **
+
 ;; @@ [clj]
-^:R [:math " \\sum_i u_i \\overset{d}\\to N "]
+(def d
+  [1 3 5 7 9 5 4 6 9 8 3 5 6])
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'pinkgorilla.demo.gorilla-plot/d"],"~:value","#'pinkgorilla.demo.gorilla-plot/d"]
+;; <=
+
+;; **
+;;; List plot plots data in the style of a scatter plot by default.
+;; **
+
+;; @@ [clj]
+(list-plot d)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;; <=
+
+;; **
+;;; There are a number of options that can be given to the plot. At the moment your best bet is to peek at the source code to see what they are.
+;; **
+
+;; @@ [clj]
+(list-plot d :joined true :plot-size 600 :aspect-ratio 6 :opacity 0.5 :plot-range [:all :all])
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;; <=
+
+;; **
+;;; You can also plot bar charts. The first argument is the list of category names, the second the category values.
+;; **
+
+;; @@ [clj]
+(bar-chart (range (count d)) d)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;; <=
+
+;; **
+;;; It's interesting to look at the structure of a plot.
+;; **
+
+;; @@ [clj]
+(def p (list-plot d))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'pinkgorilla.demo.gorilla-plot/p"],"~:value","#'pinkgorilla.demo.gorilla-plot/p"]
+;; <=
+
+;; **
+;;; It's nothing but a clojure value, which is interpreted by Gorilla as a Vega visualisation and rendered appropriately.
+;; **
+
+;; **
+;;; This makes it easy to tweak plot properties 'after the fact'.
+;; **
+
+;; @@ [clj]
+; 20200309 awb99: this oes not work
+;(assoc-in p [:content :marks  :properties :enter :fill :value] "red")
+;; @@
+
+;; **
+;;; Another key feature of gorilla-plot, is that because plots are values, it's straighforward to compose them. Here's another plot
+;; **
+
+;; @@ [clj]
+(def p2 (list-plot d :joined true :plot-range [:all [1 5]]))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'pinkgorilla.demo.gorilla-plot/p2"],"~:value","#'pinkgorilla.demo.gorilla-plot/p2"]
+;; <=
+
+;; **
+;;; And here we compose them to form a single plot. The axes and plot range are taken from the first plot given to compose.
+;; **
+
+;; @@ [clj]
+(compose p p2)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;; <=
+
+;; **
+;;; You can also plot functions.
+;; **
+
+;; @@ [clj]
+(plot (fn [x] (Math/sin x)) [0 10] :color "orange" :plot-points 50)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;; <=
+
+;; **
+;;; And, of course, these plots compose too.
+;; **
+
+;; @@ [clj]
+(compose
+   (list-plot (map #(vector % (rand %)) (range 0 10 0.01)) :opacity 0.3 :symbol-size 50)
+   (plot (fn [x] (* x (Math/pow (Math/sin x) 2))) [0 10]))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;; <=
+
+;; **
+;;; There's a histogram plot type as well. As above, it composes with list-plots well.
+;; **
+
+;; @@ [clj]
+(compose
+ (histogram (repeatedly 1000 #(rand 10)) :color "steelblue" :bins 100 :normalize :probability-density)
+ (plot (constantly 0.1) [0 10]))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;; <=
+
+;; **
+;;; Something a little fancier!
+;; **
+
+;; @@ [clj]
+(defn gaussian
+  [x sigma mu]
+  (* (/ 0.4 sigma) (Math/exp (- (/ (* (- x mu) (- x mu)) (* 2 (* sigma sigma)))))))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'pinkgorilla.demo.gorilla-plot/gaussian"],"~:value","#'pinkgorilla.demo.gorilla-plot/gaussian"]
+;; <=
+
+;; @@ [clj]
+(compose
+  (histogram (repeatedly 10000 #(- (apply + (repeatedly 50 rand)) 25))
+             :bins 100
+             :normalise :probability-density)
+  (plot #(gaussian % 2 0) [-10 10]))
 ;; @@
 ;; =>
 ;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
 ;; <=
 
 ;; @@ [clj]
-(defn r [] (- (apply + (repeatedly 50 rand)) 25))
-;; @@
-;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'pinkgorilla.demo.gorilla-plot/r"],"~:value","#'pinkgorilla.demo.gorilla-plot/r"]
-;; <=
-
-;; @@ [clj]
-(def data (repeatedly 1000 r))
-;; @@
-;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'pinkgorilla.demo.gorilla-plot/data"],"~:value","#'pinkgorilla.demo.gorilla-plot/data"]
-;; <=
-
-;; **
-;;; Let's compare the simulated data and the expected distribution.
-;; **
-
-;; @@ [clj]
 (compose
- (histogram data :bins 50 :normalise :probability-density)
- (plot #(gaussian % 2 0) [-10 10]))
+  (histogram (repeatedly 10000 #(- (apply + (repeatedly 50 rand)) 25))
+             :bins 100
+             :normalise :probability-density)
+  (histogram (repeatedly 10000 #(- (apply + (repeatedly 50 rand)) 23))
+             :bins 100
+             :normalise :probability-density
+             :colour "green")
+  (plot #(gaussian % 2 0) [-10 10])
+  (plot #(gaussian % 2 2) [-10 10] :colour "orange"))
 ;; @@
 ;; =>
 ;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
@@ -77,6 +207,3 @@
 ;; ->
 ;;; 
 ;; <-
-;; =>
-;;; ["^ ","~:type","html","~:value",["~:span"]]
-;; <=
