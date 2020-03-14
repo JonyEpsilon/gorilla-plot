@@ -1,9 +1,3 @@
-;;;; This file is part of gorilla-repl. Copyright (C) 2014-, Jony Hudson.
-;;;;
-;;;; gorilla-repl is licenced to you under the MIT licence. See the file LICENCE.txt for full details.
-
-;;; Functions for constructing vega specs. Many of the defaults are adapted from the vega examples.
-
 (ns pinkgorilla.ui.gorilla-plot.vega)
 
 ;; Constants for padding and offsets are chosen so
@@ -14,7 +8,7 @@
 
 (defn container
   [plot-size aspect-ratio]
-  {"$schema" "https://vega.github.io/schema/vega/v3.0.json"
+  {:$schema "https://vega.github.io/schema/vega/v5.json"
    :width   plot-size
    :height  (float (/ plot-size aspect-ratio))
    :padding {:top 10, :left 55, :bottom 40, :right 10}})
@@ -35,12 +29,28 @@
 
 (defn- domain-helper
   [data-key axis-plot-range axis]
-  (if (= axis-plot-range :all) {:data data-key, :field (str axis)} axis-plot-range))
+  (if (= axis-plot-range :all)
+    {:data data-key, :field (str axis)}
+    axis-plot-range))
 
 (defn default-list-plot-scales
   [data-key plot-range]
   {:scales [{:name   "x"
              :type   "linear"
+             :range  "width"
+             :zero   false
+             :domain (domain-helper data-key (first plot-range) "x")}
+            {:name   "y"
+             :type   "linear"
+             :range  "height"
+             :nice   true
+             :zero   false
+             :domain (domain-helper data-key (second plot-range) "y")}]})
+
+(defn timeseries-list-plot-scales
+  [data-key plot-range]
+  {:scales [{:name   "x"
+             :type   "time"
              :range  "width"
              :zero   false
              :domain (domain-helper data-key (first plot-range) "x")}
@@ -66,12 +76,12 @@
                                   :stroke {:value "white"}}}}]})
 
 (defn line-plot-marks
-  [data-key colour opacity]
+  [data-key color opacity]
   {:marks [{:type       "line"
             :from       {:data data-key}
             :encode     {:enter {:x             {:scale "x", :field "x"}
                                  :y             {:scale "y", :field "y"}
-                                 :stroke        {:value (or colour "#FF29D2")}
+                                 :stroke        {:value (or color "#FF29D2")}
                                  :strokeWidth   {:value 2}
                                  :strokeOpacity {:value opacity}}}}]})
 
@@ -82,7 +92,7 @@
 (defn default-bar-chart-scales
   [data-key plot-range]
   {:scales [{:name   "x"
-             :type   "ordinal"
+             :type   "band" ; "ordinal"
              :range  "width"
              :domain (domain-helper data-key (first plot-range) "x")}
             {:name   "y"
@@ -91,14 +101,14 @@
              :domain (domain-helper data-key (second plot-range) "y")}]})
 
 (defn bar-chart-marks
-  [data-key colour opacity]
+  [data-key color opacity]
   {:marks [{:type       "rect"
             :from       {:data data-key}
             :encode     {:enter {:x     {:scale "x", :field "x"}
-                                 :width {:scale "x", :band true, :offset -1}
+                                 :width {:scale "x", :band 1, :offset -1}  ; :band true
                                  :y     {:scale "y", :field "y"}
                                  :y2    {:scale "y", :value 0}}
-                         :update {:fill    {:value (or colour "steelblue")}
+                         :update {:fill    {:value (or color "steelblue")}
                                   :opacity {:value opacity}}
                          :hover  {:fill {:value "#FF29D2"}}}}]})
 

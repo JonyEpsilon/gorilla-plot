@@ -1,30 +1,27 @@
-;;;; This file is part of gorilla-repl. Copyright (C) 2014-, Jony Hudson.
-;;;;
-;;;; gorilla-repl is licenced to you under the MIT licence. See the file LICENCE.txt for full details.
-
 (ns pinkgorilla.ui.gorilla-plot.plot
   (:require [pinkgorilla.ui.gorilla-plot.vega :as vega]
-            [pinkgorilla.ui.gorilla-plot.util :as util]))
+            [pinkgorilla.ui.gorilla-plot.util :as util :refer [uuid]]))
 
 ;; Series' are given random names so that plots can be composed
 ;; Thanks: https://gist.github.com/gorsuch/1418850
 
 
-(defn- uuid [] (str (java.util.UUID/randomUUID)))
-
 (defn add-indices [d] (map vector (range (count d)) d))
 
 (defn list-plot
   "Function for plotting list data."
-  [data & {:keys [joined plot-size aspect-ratio colour color plot-range #_symbol symbol-size opacity x-title y-title]
+  [data & {:keys [joined plot-size aspect-ratio plot-range symbol-size opacity series-name #_symbol ; keys with default values
+                  colour color x-title y-title] ; keys  without default values
            :or   {joined       false
                   plot-size    400
                   aspect-ratio 1.618
                   plot-range   [:all :all]
-                  ;;symbol       "circle"
                   symbol-size  70
-                  opacity      1}}]
-  (let [series-name (uuid)
+                  opacity      1
+                  series-name (uuid)
+                  ;;symbol       "circle"
+                  }}]
+  (let [;series-name (uuid)
         plot-data (if (sequential? (first data))
                     data
                     (add-indices data))]
@@ -37,6 +34,15 @@
      (vega/default-list-plot-scales series-name plot-range)
      (vega/default-plot-axes x-title y-title))))
 
+(defn timeseries-plot [data & keys]
+  (let [series-name (uuid)
+        params (into [] (concat [data :series-name series-name] keys))
+        plot (apply list-plot params)
+        plot-range [:all :all]]
+    (merge
+     plot
+     (vega/timeseries-list-plot-scales series-name plot-range))))
+
 (defn plot
   "Function for plotting functions of a single variable."
   [func [xmin xmax] & {:keys [plot-points]
@@ -48,7 +54,8 @@
     (apply (partial list-plot plot-data) (mapcat identity (merge {:joined true} opts)))))
 
 (defn bar-chart
-  [categories values & {:keys [plot-size aspect-ratio colour color plot-range opacity x-title y-title]
+  [categories values & {:keys [plot-size aspect-ratio plot-range opacity ; keys with defaults
+                               colour color x-title y-title]
                         :or   {plot-size    400
                                aspect-ratio 1.618
                                plot-range   [:all :all]
@@ -106,34 +113,18 @@
      (vega/default-list-plot-scales series-name plot-range)
      (vega/default-plot-axes x-title y-title))))
 
-
-;(defn from-vega
-;  "extract vega-plot spec from pink-gorilla-repl output format.
-;   all the individual plots are already formatted for pink-gorilla-repl
-;   in order to compose them we have to first unwrap the gorilla format to get the naked
-;   plot data, then they are composeable again"
-;  [g]
-;  (:content g))
-
-
 (defn compose
   [& plots]
-  (let [plot-data plots                                     ;  (map from-vega plots)
-        first-plot (first plot-data)
+  (let [first-plot (first plots)
         {:keys [width height padding scales axes]} first-plot
-        data (apply concat (map :data plot-data))
-        marks (apply concat (map :marks plot-data))]
-    {:width   width
+        data (apply concat (map :data plots))
+        marks (apply concat (map :marks plots))]
+    {; take plot parameter from first plot
+     :width   width
      :height  height
      :padding padding
      :scales  scales
      :axes    axes
+     ; merge data and marks
      :data    data
      :marks   marks}))
-
-(comment
-  (list-plot [1 2 3])
-
-  (compose
-   (list-plot [1 2 3])
-   (list-plot [3 2 1])))
