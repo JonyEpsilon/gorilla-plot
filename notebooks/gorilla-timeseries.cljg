@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{:tags "clj,plot,sample", :name "gorilla-timeseries samples", :tagline "samples adapted from legacy-gorilla"}
+{:tags "clj,plot,sample", :name "", :tagline "gorilla-plot with timeseries plot"}
 
 ;; @@
 

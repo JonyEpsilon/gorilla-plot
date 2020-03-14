@@ -1,21 +1,30 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{}
+{:tagline "raw vega plots (original converted)"}
 
 ;; @@
 
 ;; **
-;;; # Pink Gorilla 
-;;; 
-;;; Shift + enter evaluates code. Hit CTRL+g twice in quick succession or click the menu icon (upper-right corner) for more commands.
-;;; 
-;;; It's a good habit to run each worksheet in its own namespace. We created a random namespace for you; you can keep using it.
+;;; # RAW VEGA PLOTS (stolen from the official vega samples)
 ;; **
 
 ;; @@ [clj]
-(def s {:description
- "An annotated line chart of the population of Falkensee, Germany.",
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=
+
+;; @@ [clj]
+; https://vega.github.io/vega/examples/falkensee-population/
+(def s 
+  {:$schema "https://vega.github.io/schema/vega/v5.json",
+   :height 350,
+   :description "An annotated line chart of the population of Falkensee, Germany.",
  :legends
  [{:fill "color",
    :title "Period",
@@ -24,7 +33,7 @@
    :encode
    {:symbols
     {:update
-     {:strokeWidth {:value 0},
+     {:strokeWidth {:value 2},
       :shape {:value "square"},
       :opacity {:value 0.3}}}}}],
  :config {:title {:fontSize 16}},
@@ -55,7 +64,7 @@
    {:data "table", :field "population"}}
   {:name "color",
    :type "ordinal",
-   :domain {:data "annotation", :field "text"},
+   :domain {:data "annotation", :field "mtext"},
    :range ["black" "red"]}],
  :title
  {:text
@@ -71,7 +80,7 @@
      :x2 {:scale "x", :field "end"},
      :y {:value 0},
      :y2 {:signal "height"},
-     :fill {:scale "color", :field "text"},
+     :fill {:scale "color", :field "mtext"},
      :opacity {:value 0.2}}}}
   {:type "line",
    :from {:data "table"},
@@ -92,9 +101,7 @@
      :strokeWidth {:value 1.5},
      :fill {:value "white"},
      :size {:value 30}}}}],
- :$schema
- "https://vega.github.io/schema/vega/v5.json",
- :height 350,
+
  :data
  [{:name "table",
    :values
@@ -142,10 +149,8 @@
      :signal "years"}]}
   {:name "annotation",
    :values
-   [{:start 1933, :end 1945, :text "Nazi Rule"}
-    {:start 1948,
-     :end 1989, 
-     :text "GDR (East Germany)"}]}]})
+   [{:start 1933, :end 1945, :mtext "Nazi Rule"}
+    {:start 1948, :end 1989, :mtext "GDR (East Germany)"}]}]})
 ;; @@
 ;; =>
 ;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'user/s"],"~:value","#'user/s"]
@@ -155,7 +160,7 @@
 ^:R [:vega s]
 ;; @@
 ;; =>
-;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:vega",["^ ","~:description","An annotated line chart of the population of Falkensee, Germany.","~:legends",[["^ ","~:fill","color","~:title","Period","~:orient","top-left","~:offset",8,"~:encode",["^ ","~:symbols",["^ ","~:update",["^ ","~:strokeWidth",["^ ","~:value",2],"~:shape",["^ ","^?","square"],"~:opacity",["^ ","^?",0.3]]]]]],"~:config",["^ ","^8",["^ ","~:fontSize",16]],"~:axes",[["^ ","^9","left","~:scale","y","^8","Population","~:titlePadding",10,"~:grid",true],["^ ","^9","bottom","^E","x","~:format","d","^8","Year","~:tickCount",15]],"~:width",500,"~:scales",[["^ ","~:name","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","~:data","table","~:field","year"]],["^ ","^L","y","^0","linear","^M","height","~:nice",true,"^N",true,"^O",["^ ","^P","table","^Q","population"]],["^ ","^L","color","^0","ordinal","^O",["^ ","^P","annotation","^Q","mtext"],"^M",["black","red"]]],"^8",["^ ","~:text",["^ ","~:signal","'Population of Falkensee from ' + years[0] + ' to ' + years[1]"]],"~:padding",5,"~:marks",[["^ ","^0","rect","~:from",["^ ","^P","annotation"],"^;",["^ ","~:enter",["^ ","~:x",["^ ","^E","x","^Q","start"],"~:x2",["^ ","^E","x","^Q","end"],"~:y",["^ ","^?",0],"~:y2",["^ ","^T","height"],"^7",["^ ","^E","color","^Q","mtext"],"^A",["^ ","^?",0.2]]]],["^ ","^0","line","^W",["^ ","^P","table"],"^;",["^ ","^X",["^ ","~:interpolate",["^ ","^?","monotone"],"~:x",["^ ","^E","x","^Q","year"],"~:y",["^ ","^E","y","^Q","population"],"~:stroke",["^ ","^?","steelblue"],"^>",["^ ","^?",3]]]],["^ ","^0","symbol","^W",["^ ","^P","table"],"^;",["^ ","^X",["^ ","~:x",["^ ","^E","x","^Q","year"],"~:y",["^ ","^E","y","^Q","population"],"^10",["^ ","^?","steelblue"],"^>",["^ ","^?",1.5],"^7",["^ ","^?","white"],"~:size",["^ ","^?",30]]]]],"~:$schema","https://vega.github.io/schema/vega/v5.json","~:height",350,"^P",[["^ ","^L","table","~:values",[["^ ","~:year",1875,"~:population",1309],["^ ","^15",1890,"^16",1558],["^ ","^15",1910,"^16",4512],["^ ","^15",1925,"^16",8180],["^ ","^15",1933,"^16",15915],["^ ","^15",1939,"^16",24824],["^ ","^15",1946,"^16",28275],["^ ","^15",1950,"^16",29189],["^ ","^15",1964,"^16",29881],["^ ","^15",1971,"^16",26007],["^ ","^15",1981,"^16",24029],["^ ","^15",1985,"^16",23340],["^ ","^15",1989,"^16",22307],["^ ","^15",1990,"^16",22087],["^ ","^15",1991,"^16",22139],["^ ","^15",1992,"^16",22105],["^ ","^15",1993,"^16",22242],["^ ","^15",1994,"^16",22801],["^ ","^15",1995,"^16",24273],["^ ","^15",1996,"^16",25640],["^ ","^15",1997,"^16",27393],["^ ","^15",1998,"^16",29505],["^ ","^15",1999,"^16",32124],["^ ","^15",2000,"^16",33791],["^ ","^15",2001,"^16",35297],["^ ","^15",2002,"^16",36179],["^ ","^15",2003,"^16",36829],["^ ","^15",2004,"^16",37493],["^ ","^15",2005,"^16",38376],["^ ","^15",2006,"^16",39008],["^ ","^15",2007,"^16",39366],["^ ","^15",2008,"^16",39821],["^ ","^15",2009,"^16",40179],["^ ","^15",2010,"^16",40511],["^ ","^15",2011,"^16",40465],["^ ","^15",2012,"^16",40905],["^ ","^15",2013,"^16",41258],["^ ","^15",2014,"^16",41777]],"~:transform",[["^ ","^0","extent","^Q","year","^T","years"]]],["^ ","^L","annotation","^14",[["^ ","~:start",1933,"~:end",1945,"~:mtext","Nazi Rule"],["^ ","^18",1948,"^19",1989,"^1:","GDR (East Germany)"]]]]]],"~:map-keywords",true,"~:widget",true]]
 ;; <=
 
 ;; @@ [clj]
@@ -194,7 +199,7 @@
 ^:R [:vega x]
 ;; @@
 ;; =>
-;;; ["^ ","~:type","~:reagent-cljs","~:map-keywords",true]
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:vega",["^ ","~:$schema","https://vega.github.io/schema/vega-lite/v4.json","~:data",["^ ","~:url","data/sp500.csv"],"~:vconcat",[["^ ","~:width",480,"~:mark","area","~:encoding",["^ ","~:x",["^ ","~:field","date","^0","temporal","~:scale",["^ ","~:domain",["^ ","~:selection","brush"]],"~:axis",["^ ","~:title",""]],"~:y",["^ ","^<","price","^0","quantitative"]]],["^ ","^9",480,"~:height",60,"^:","area","^?",["^ ","~:brush",["^ ","^0","interval","~:encodings",["x"]]],"^;",["^ ","~:x",["^ ","^<","date","^0","temporal"],"~:y",["^ ","^<","price","^0","quantitative","^@",["^ ","~:tickCount",3,"~:grid",false]]]]]]],"~:map-keywords",true,"~:widget",true]]
 ;; <=
 
 ;; @@ [clj]
