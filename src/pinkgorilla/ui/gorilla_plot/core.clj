@@ -34,8 +34,9 @@
 ;(defn unwrap [renderable]
 ;  (rendered-to-spec (render renderable)))
 
+
 (defn unwrap [renderable]
-   (second renderable)) ; [:vega data]
+  (second renderable)) ; [:vega data]
 
 (defn compose
   [& plots]
