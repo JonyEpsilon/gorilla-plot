@@ -138,3 +138,49 @@ d
 ;; =>
 ;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:vega",["^ ","~:$schema","https://vega.github.io/schema/vega-lite/v4.json","~:vconcat",[["^ ","~:height",250,"~:width",800,"~:mark",["^ ","^0","~:point","~:color","blue"],"~:data",["^ ","~:values",[["^ ","~:x",1574424000000,"~:y",6],["^ ","~:x",1577016000000,"~:y",5],["^ ","~:x",1579694400000,"~:y",1],["^ ","~:x",1582372800000,"~:y",7],["^ ","~:x",1584878400000,"~:y",5]]],"~:encoding",["^ ","~:x",["^ ","~:field","x","^0","temporal","~:axis",["^ ","~:title","","~:labels",false]],"~:y",["^ ","^@",["^ ","^A","msft","~:titleColor","black","~:orient","~:left"],"^?","y","^0","quantitative"]]],["^ ","~:layer",[["^ ","^7",50,"^8",800,"^9",["^ ","^0","area","^;","#85C5A6"],"^<",["^ ","^=",[["^ ","~:x",1574424000000,"~:y",-1],["^ ","~:x",1577016000000,"~:y",1],["^ ","~:x",1579694400000,"~:y",-2],["^ ","~:x",1582372800000,"~:y",3],["^ ","~:x",1584878400000,"~:y",0]]],"^>",["^ ","~:x",["^ ","^?","x","^0","temporal","^@",["^ ","^A","","^B",true]],"~:y",["^ ","^@",["^ ","^A","B","^C","black","^D","^E"],"^?","y","^0","quantitative"]]],["^ ","^7",50,"^8",800,"^9",["^ ","^0","point","^;","red"],"^<",["^ ","^=",[["^ ","~:x",1574424000000,"~:y",1],["^ ","~:x",1577016000000,"~:y",2],["^ ","~:x",1579694400000,"~:y",4],["^ ","~:x",1582372800000,"~:y",3],["^ ","~:x",1584878400000,"~:y",2]]],"^>",["^ ","~:x",["^ ","^?","x","^0","temporal","^@",["^ ","^A","","^B",true]],"~:y",["^ ","^@",["^ ","^A","A","^C","black","^D","~:right"],"^?","y","^0","quantitative"]]]],"~:resolve",["^ ","~:scale",["^ ","~:y","independent"]]]]]],"~:map-keywords",true,"~:widget",true]]
 ;; <=
+
+;; @@ [clj]
+(clojure.repl/doc pinkgorilla.ui.gorilla-plot.multi/multi-plot)
+;; @@
+;; ->
+;;; -------------------------
+;;; pinkgorilla.ui.gorilla-plot.multi/multi-plot
+;;; ([& plots])
+;;;   plots one or more plots (aligned vertically)
+;;;    each plot can contain one or more series
+;;; 
+;;;    example
+;;;      - first plot is single line, therefore plot params have to be set {}
+;;;     (as we do below), or first plot is wrapped with []
+;;; 
+;;;    series-plot map
+;;;       :data - vector of (length n)
+;;;       all other parameter r¡are optional:
+;;;       :color
+;;;       :orient   :left :right
+;;;       :title of the axis    
+;;;       :height
+;;;       :width
+;;; 
+;;;    (def a [1 2 4 3 2])
+;;;    (def b [-1 1 -2 3 0])
+;;;    (def c [6 5 1 7 5])
+;;; 
+;;;    (multi-plot {:width 100} 
+;;;       {:data c :orient :left :title "C" :color "blue" :height 20 } 
+;;;       [{:data a :orient :right :title "A" :color "red" :height 50} 
+;;;       {:data b :orient :left :title "B" :height 50}]))  
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=
