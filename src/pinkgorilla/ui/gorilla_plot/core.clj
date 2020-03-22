@@ -3,6 +3,7 @@
    In .core ns we wrap the result of all functions into [:vega spec]"
   (:require
    [pinkgorilla.ui.gorilla-plot.plot :as p]
+   [pinkgorilla.ui.gorilla-plot.multi :as m]
    ))
 
 (defn -vega! [spec]
@@ -18,8 +19,9 @@
 (def list-plot (-wrap-vega p/list-plot))
 (def bar-chart (-wrap-vega p/bar-chart))
 (def histogram (-wrap-vega p/histogram))
-(def timeseries-plot (-wrap-vega p/timeseries-plot))
 
+(def timeseries-plot (-wrap-vega p/timeseries-plot))
+(def multi-plot (-wrap-vega m/multi-plot))
 
 (defn -unwrap [renderable]
    (second renderable)) ; [:vega data]

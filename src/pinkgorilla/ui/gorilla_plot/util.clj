@@ -1,5 +1,7 @@
 (ns pinkgorilla.ui.gorilla-plot.util)
 
+(defn uuid [] (str (java.util.UUID/randomUUID)))
+
 (defn count-in-range
   [data min max]
   (count (filter #(and (< % max) (>= % min)) data)))

@@ -9,7 +9,6 @@
 (defn container
   [plot-size aspect-ratio]
   {:$schema "https://vega.github.io/schema/vega/v5.json"
-   ;"$schema" "https://vega.github.io/schema/vega/v3.0.json"
    :width   plot-size
    :height  (float (/ plot-size aspect-ratio))
    :padding {:top 10, :left 55, :bottom 40, :right 10}})
@@ -31,7 +30,9 @@
 
 (defn- domain-helper
   [data-key axis-plot-range axis]
-  (if (= axis-plot-range :all) {:data data-key, :field (str axis)} axis-plot-range))
+  (if (= axis-plot-range :all) 
+    {:data data-key, :field (str axis)} 
+    axis-plot-range))
 
 (defn default-list-plot-scales
   [data-key plot-range]

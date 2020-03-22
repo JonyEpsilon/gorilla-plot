@@ -1,12 +1,10 @@
 (ns pinkgorilla.ui.gorilla-plot.plot
   (:require [pinkgorilla.ui.gorilla-plot.vega :as vega]
-            [pinkgorilla.ui.gorilla-plot.util :as util]))
+            [pinkgorilla.ui.gorilla-plot.util :as util :refer [uuid]]))
 
 ;; Series' are given random names so that plots can be composed
 ;; Thanks: https://gist.github.com/gorsuch/1418850
 
-
-(defn- uuid [] (str (java.util.UUID/randomUUID)))
 
 (defn add-indices [d] (map vector (range (count d)) d))
 
