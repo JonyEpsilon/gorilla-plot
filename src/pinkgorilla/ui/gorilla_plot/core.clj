@@ -55,7 +55,7 @@
 
   ; list-plot with results in differne tformats  
   (list-plot [1 2 3]) ; returns the reifi function
-  (render (list-plot [1 2 3])) ;; The data structure how the frontend would render it; inside the spec
+  ;; (render (list-plot [1 2 3])) ;; The data structure how the frontend would render it; inside the spec
   (unwrap (list-plot [1 2 3])) ;; only the vega specification
 
   ;; composed plot 
