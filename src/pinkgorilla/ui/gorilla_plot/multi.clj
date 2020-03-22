@@ -152,13 +152,15 @@
 
   (build-plot 500 true {:data a :orient "right"})
   (build-plot 500 true [{:data a :orient "right" :title "A"}
-                   {:data b :orient "left" :title "B"}])
+                        {:data b :orient "left" :title "B"}])
   ;; => {:layer [{:width 500, :mark {:type "point", :color "#85C5A6"}, :data {:values [{:x 0, :y 1} {:x 1, :y 2} {:x 2, :y 4} {:x 3, :y 3} {:x 4, :y 2}]}, :encoding {:x {:field "x", :type "quantitative", :axis {:title "", :labels true}}, :y {:axis {:title "A", :titleColor "black", :orient "right"}, :field "y", :type "quantitative"}}} {:width 500, :mark {:type "point", :color "#85C5A6"}, :data {:values [{:x 0, :y -1} {:x 1, :y 1} {:x 2, :y -2} {:x 3, :y 3} {:x 4, :y 0}]}, :encoding {:x {:field "x", :type "quantitative", :axis {:title "", :labels true}}, :y {:axis {:title "B", :titleColor "black", :orient "left"}, :field "y", :type "quantitative"}}}], :resolve {:scale {:y "independent"}}}
-
+  
 
   (build-plots 500 {:data a :orient "right" :title "A"}
                {:data b :orient "left" :title "B"})
 
+  (clojure.repl/doc multi-plot)
+  
   (multi-plot  [{:data a :orient "right" :title "A"}
                 {:data b :orient "left" :title "B"}])
 
