@@ -103,9 +103,9 @@ d
 ;; <=
 
 ;; @@ [clj]
-  (def a [1 2 4 3 2])
+  (def a [ 1 2  4 3 2])
   (def b [-1 1 -2 3 0])
-  (def c [6 5 1 7 5])
+  (def c [ 6 5  1 7 5])
 ;; @@
 ;; =>
 ;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'pinkgorilla.demo.gorilla-plot/c"],"~:value","#'pinkgorilla.demo.gorilla-plot/c"]
@@ -123,20 +123,33 @@ d
 ;; <=
 
 ;; @@ [clj]
-(multi-plot {:height 500} {:data a :orient "right" :title "A"})
+(multi-plot {:width 500} {:data a :orient "right" :title "A"})
 ;; @@
-;; =>
-;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:vega",["^ ","~:$schema","https://vega.github.io/schema/vega-lite/v4.json","~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:mark",["^ ","^0","point","~:color","#85C5A6"],"~:data",["^ ","~:values",[["^ ","~:x",0,"~:y",1],["^ ","~:x",1,"~:y",2],["^ ","~:x",2,"~:y",4],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",2]]],"~:encoding",["^ ","~:x",["^ ","~:field","x","^0","quantitative"],"~:y",["^ ","^@","y","^0","quantitative","~:axis",["^ ","~:title","A","~:titleColor","#85C5A6","~:orient","right"]]]]],"~:map-keywords",true,"~:widget",true]]
-;; <=
 
 ;; @@ [clj]
-^:R [:json  (second (multi-plot {} 
-   {:data c :orient :left :title "C" :color "blue" :height 20 :width 100} 
+^:R [:json  (second (multi-plot {:width 100} 
+   {:data c :orient :left :title "C" :color "blue" :height 20 } 
    [{:data a :orient :right :title "A" :color "red" :height 50 :width 100} 
     {:data b :orient :left :title "B" :height 50 :width 100}]))]
 ;; @@
 ;; =>
-;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:json",["^ ","~:$schema","https://vega.github.io/schema/vega-lite/v4.json","~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:vconcat",[["^ ","~:height",100,"~:mark",["^ ","^0","point","~:color","blue"],"~:data",["^ ","~:values",[["^ ","~:x",0,"~:y",6],["^ ","~:x",1,"~:y",5],["^ ","~:x",2,"~:y",1],["^ ","~:x",3,"~:y",7],["^ ","~:x",4,"~:y",5]]],"~:encoding",["^ ","~:x",["^ ","~:field","x","^0","quantitative"],"~:y",["^ ","^B","y","^0","quantitative","~:axis",["^ ","~:title","C","~:titleColor","#85C5A6","~:orient","^8"]]]],["^ ","~:layer",[["^ ","^<",100,"^=",["^ ","^0","point","^>","red"],"^?",["^ ","^@",[["^ ","~:x",0,"~:y",1],["^ ","~:x",1,"~:y",2],["^ ","~:x",2,"~:y",4],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",2]]],"^A",["^ ","~:x",["^ ","^B","x","^0","quantitative"],"~:y",["^ ","^B","y","^0","quantitative","^C",["^ ","^D","A","^E","#85C5A6","^F","^:"]]]],["^ ","^<",100,"^=",["^ ","^0","point","^>","#85C5A6"],"^?",["^ ","^@",[["^ ","~:x",0,"~:y",-1],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",-2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",0]]],"^A",["^ ","~:x",["^ ","^B","x","^0","quantitative"],"~:y",["^ ","^B","y","^0","quantitative","^C",["^ ","^D","B","^E","#85C5A6","^F","^8"]]]]],"~:resolve",["^ ","~:scale",["^ ","~:y","independent"]]]]]],"~:map-keywords",true,"~:widget",true]]
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:json",["^ ","~:$schema","https://vega.github.io/schema/vega-lite/v4.json","~:vconcat",[["^ ","~:height",20,"~:width",800,"~:mark",["^ ","^0","point","~:color","blue"],"~:data",["^ ","~:values",[["^ ","~:x",0,"~:y",6],["^ ","~:x",1,"~:y",5],["^ ","~:x",2,"~:y",1],["^ ","~:x",3,"~:y",7],["^ ","~:x",4,"~:y",5]]],"~:encoding",["^ ","~:x",["^ ","~:field","x","^0","quantitative","~:axis",["^ ","~:title","","~:labels",false]],"~:y",["^ ","^?",["^ ","^@","C","~:titleColor","black","~:orient","~:left"],"^>","y","^0","quantitative"]]],["^ ","~:layer",[["^ ","^7",50,"^8",800,"^9",["^ ","^0","point","^:","red"],"^;",["^ ","^<",[["^ ","~:x",0,"~:y",1],["^ ","~:x",1,"~:y",2],["^ ","~:x",2,"~:y",4],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",2]]],"^=",["^ ","~:x",["^ ","^>","x","^0","quantitative","^?",["^ ","^@","","^A",true]],"~:y",["^ ","^?",["^ ","^@","A","^B","black","^C","~:right"],"^>","y","^0","quantitative"]]],["^ ","^7",50,"^8",800,"^9",["^ ","^0","point","^:","#85C5A6"],"^;",["^ ","^<",[["^ ","~:x",0,"~:y",-1],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",-2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",0]]],"^=",["^ ","~:x",["^ ","^>","x","^0","quantitative","^?",["^ ","^@","","^A",true]],"~:y",["^ ","^?",["^ ","^@","B","^B","black","^C","^D"],"^>","y","^0","quantitative"]]]],"~:resolve",["^ ","~:scale",["^ ","~:y","independent"]]]]]],"~:map-keywords",true,"~:widget",true]]
+;; <=
+
+;; @@ [clj]
+(multi-plot {:width 800} 
+   {:data c :orient :left :title "msft" :color "blue" :height 250 :type :point } 
+   {:data a :orient :right :title "A" :color "red" :height 50 } 
+   {:data b :orient :left :title "B" :height 50 :type "line"}
+   [{:data a :orient :right :title "A" :color "red" :height 50 } 
+    {:data b :orient :left :title "B" :height 50 :type "bar"}]
+   [{:data a :orient :right :title "A" :color "red" :height 50 } 
+    {:data b :orient :left :title "B" :height 50 :type "bar"}]
+    {:data c :orient :left :title "msft" :color "blue" :height 250 :type :point } 
+            )
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:vega",["^ ","~:$schema","https://vega.github.io/schema/vega-lite/v4.json","~:vconcat",[["^ ","~:height",250,"~:width",800,"~:mark",["^ ","^0","~:point","~:color","blue"],"~:data",["^ ","~:values",[["^ ","~:x",0,"~:y",6],["^ ","~:x",1,"~:y",5],["^ ","~:x",2,"~:y",1],["^ ","~:x",3,"~:y",7],["^ ","~:x",4,"~:y",5]]],"~:encoding",["^ ","~:x",["^ ","~:field","x","^0","quantitative","~:axis",["^ ","~:title","","~:labels",false]],"~:y",["^ ","^@",["^ ","^A","msft","~:titleColor","black","~:orient","~:left"],"^?","y","^0","quantitative"]]],["^ ","^7",50,"^8",800,"^9",["^ ","^0","point","^;","red"],"^<",["^ ","^=",[["^ ","~:x",0,"~:y",1],["^ ","~:x",1,"~:y",2],["^ ","~:x",2,"~:y",4],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",2]]],"^>",["^ ","~:x",["^ ","^?","x","^0","quantitative","^@",["^ ","^A","","^B",false]],"~:y",["^ ","^@",["^ ","^A","A","^C","black","^D","~:right"],"^?","y","^0","quantitative"]]],["^ ","^7",50,"^8",800,"^9",["^ ","^0","line","^;","#85C5A6"],"^<",["^ ","^=",[["^ ","~:x",0,"~:y",-1],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",-2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",0]]],"^>",["^ ","~:x",["^ ","^?","x","^0","quantitative","^@",["^ ","^A","","^B",false]],"~:y",["^ ","^@",["^ ","^A","B","^C","black","^D","^E"],"^?","y","^0","quantitative"]]],["^ ","~:layer",[["^ ","^7",50,"^8",800,"^9",["^ ","^0","point","^;","red"],"^<",["^ ","^=",[["^ ","~:x",0,"~:y",1],["^ ","~:x",1,"~:y",2],["^ ","~:x",2,"~:y",4],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",2]]],"^>",["^ ","~:x",["^ ","^?","x","^0","quantitative","^@",["^ ","^A","","^B",false]],"~:y",["^ ","^@",["^ ","^A","A","^C","black","^D","^F"],"^?","y","^0","quantitative"]]],["^ ","^7",50,"^8",800,"^9",["^ ","^0","bar","^;","#85C5A6"],"^<",["^ ","^=",[["^ ","~:x",0,"~:y",-1],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",-2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",0]]],"^>",["^ ","~:x",["^ ","^?","x","^0","quantitative","^@",["^ ","^A","","^B",false]],"~:y",["^ ","^@",["^ ","^A","B","^C","black","^D","^E"],"^?","y","^0","quantitative"]]]],"~:resolve",["^ ","~:scale",["^ ","~:y","independent"]]],["^ ","^G",[["^ ","^7",50,"^8",800,"^9",["^ ","^0","point","^;","red"],"^<",["^ ","^=",[["^ ","~:x",0,"~:y",1],["^ ","~:x",1,"~:y",2],["^ ","~:x",2,"~:y",4],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",2]]],"^>",["^ ","~:x",["^ ","^?","x","^0","quantitative","^@",["^ ","^A","","^B",false]],"~:y",["^ ","^@",["^ ","^A","A","^C","black","^D","^F"],"^?","y","^0","quantitative"]]],["^ ","^7",50,"^8",800,"^9",["^ ","^0","bar","^;","#85C5A6"],"^<",["^ ","^=",[["^ ","~:x",0,"~:y",-1],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",-2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",0]]],"^>",["^ ","~:x",["^ ","^?","x","^0","quantitative","^@",["^ ","^A","","^B",false]],"~:y",["^ ","^@",["^ ","^A","B","^C","black","^D","^E"],"^?","y","^0","quantitative"]]]],"^H",["^ ","^I",["^ ","~:y","independent"]]],["^ ","^7",250,"^8",800,"^9",["^ ","^0","^:","^;","blue"],"^<",["^ ","^=",[["^ ","~:x",0,"~:y",6],["^ ","~:x",1,"~:y",5],["^ ","~:x",2,"~:y",1],["^ ","~:x",3,"~:y",7],["^ ","~:x",4,"~:y",5]]],"^>",["^ ","~:x",["^ ","^?","x","^0","quantitative","^@",["^ ","^A","","^B",true]],"~:y",["^ ","^@",["^ ","^A","msft","^C","black","^D","^E"],"^?","y","^0","quantitative"]]]]]],"~:map-keywords",true,"~:widget",true]]
 ;; <=
 
 ;; @@ [clj]

@@ -7,11 +7,13 @@
    [pinkgorilla.ui.gorilla-plot.util :as util :refer [uuid]]))
 
 (defn container-lite
-  [plot-size aspect-ratio]
+  "vega-lite container (version 4)"
+  [];plot-size aspect-ratio]
   {:$schema "https://vega.github.io/schema/vega-lite/v4.json"
    ;:width   plot-size
    ;:height  (float (/ plot-size aspect-ratio))
-   :padding {:top 10, :left 55, :bottom 40, :right 10}})
+   ;:padding {:top 10, :left 55, :bottom 40, :right 10}
+   })
 
 
 (defn convert-series
@@ -23,48 +25,62 @@
                        (fn [x y] {:x x :y y})
                        time series))}))
 
-(defn build-series [m]
+(defn build-series 
+  "builds a vega lite plot-spec for a single series"
+  [width last? m]
   ;(println "build-series " m)
   (let [;name (uuid)
-        {:keys [data color title orient height width]
+        {:keys [data color title orient height #_width type scale]
          :or {color "#85C5A6"
               title nil
               orient "left"
               height nil
-              width nil}} m]
+              ;width nil
+              type "point"
+              scale nil}} m]
     (merge
      (when height {:height height})
      (when width {:width width})
-     {:mark {:type "point" :color color}
+
+     {:mark {:type type :color color}
       :data (convert-series data)
       :encoding {:x {:field "x"
-                     :type "quantitative"}
-                 :y {:field "y"
                      :type "quantitative"
-                     :axis {:title title :titleColor "#85C5A6" :orient orient}}}})))
+                     :axis {:title  ""
+                            :labels last?
+                            }}
+                 :y (merge
+                     (when title
+                       {:axis {:title title :titleColor "black" :orient orient}})
+                     (when scale 
+                       {:scale {:type scale}})
+                     {:field "y"
+                      :type "quantitative"})}})))
 
 
 (defn- build-plot
   "builds a plot that can contain one or more series"
-  [plots]
-  (if (vector? plots)
-    (if (> (count plots) 1)
+  [width last? series]
+  (if (vector? series)
+    (if (> (count series) 1)
       ; multiple series on one plot
-      {:layer (into [] (map build-plot plots))
+      {:layer (into [] (map (partial build-plot width last?) series))
        :resolve {:scale {:y "independent"}}}
-      ;list of plots, but only one plot
-      (build-series (first plots)))
+      ;list of series, but only one plot
+      (build-series width last? (first series)))
     ; plot with only single series
-    (build-series plots)))
+    (build-series width last? series)))
 
 (defn- build-plots
   "builds one or more plots.
    multiple plots are organized vertically"
-  [& plots]
+  [width & plots]
   (if (= (count plots) 1)
-    (build-plot (first plots)) ; no vertial plots
+    (build-plot width true (first plots)) ; no vertical plots
     ; vconcat multiple plots
-    {:vconcat (into [] (map build-plot plots))
+    {:vconcat (conj 
+               (into [] (map (partial build-plot width false) (butlast plots)))
+               (build-plot width true (last plots)))
      ;:resolve {:scale {:y "independent"}}
      }))
 
@@ -101,12 +117,11 @@
                        [nil plots])
         ;_ (println "args: " args)
         ;_ (println "plots: " plots)
-        {:keys [plot-size aspect-ratio]
-         :or   {plot-size    400
-                aspect-ratio 1.618}} args]
+        {:keys [width]
+         :or   {width    800}} args]
     (merge
-     (container-lite plot-size aspect-ratio)
-     (apply build-plots plots))))
+     (container-lite); plot-size aspect-ratio)
+     (apply (partial build-plots width) plots))))
 
 
 
@@ -117,25 +132,24 @@
   (def c [6 5 1 7 5])
 
   (convert-series a)
-  (build-series {:data a :orient "right"})
+  (build-series 500 {:data a :orient "right"})
 
   (vector? {:data a :orient "right"})
 
-  (build-plot {:data a :orient "right"})
-  (build-plot [{:data a :orient "right" :title "A"}
-               {:data b :orient "left" :title "B"}])
+  (build-plot 500 {:data a :orient "right"})
+  (build-plot 500 [{:data a :orient "right" :title "A"}
+                   {:data b :orient "left" :title "B"}])
 
-  (build-plots {:data a :orient "right" :title "A"}
+  (build-plots 500 {:data a :orient "right" :title "A"}
                {:data b :orient "left" :title "B"})
 
   (multi-plot  [{:data a :orient "right" :title "A"}
                 {:data b :orient "left" :title "B"}])
 
   (multi-plot {:i 88}
-              [{:data c :orient "left" :title "C" :height 500}]
+              [{:data c :orient "left" :title "C" :height 500 :scale "log"}]
               [{:data a :orient "right" :title "A"}
                {:data b :orient "left" :title "B"}])
 
-  
   )
 
